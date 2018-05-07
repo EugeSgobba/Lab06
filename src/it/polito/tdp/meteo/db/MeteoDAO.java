@@ -13,6 +13,10 @@ import it.polito.tdp.meteo.bean.Rilevamento;
 
 public class MeteoDAO {
 
+	/**
+	 * Elenco di tutte le città presenti nel database.
+	 * @return
+	 */
 	public List<Citta> getAllCitta() {
 		String sql = "SELECT DISTINCT localita FROM situazione ORDER BY localita";
 
@@ -36,6 +40,14 @@ public class MeteoDAO {
 		return result;
 	}
 
+	/**
+	 * Dato un mese ed una città, estrare dal DB l'umidità media relativa a tale mese e tale città.
+	 * <p>Tutti i calcoli sono delegati al database.
+	 * 
+	 * @param mese
+	 * @param citta
+	 * @return
+	 */
 	public Double getUmiditaMedia(Month mese, Citta citta) {
 
 		String sql = "SELECT AVG(Umidita) AS U FROM situazione " + 
@@ -67,6 +79,10 @@ public class MeteoDAO {
 		return null;
 	}
 
+	/**
+	 * Carica dal database l'elenco completo di tutti i rilevamenti
+	 * @return
+	 */
 	public List<Rilevamento> getAllRilevamenti() {
 
 		final String sql = "SELECT Localita, Data, Umidita FROM situazione ORDER BY data ASC";
@@ -95,6 +111,13 @@ public class MeteoDAO {
 		}
 	}
 
+	/**
+	 * Carica i rilevamenti di una determinata città in un determinato mese.
+	 * 
+	 * @param mese
+	 * @param localita
+	 * @return
+	 */
 	public List<Rilevamento> getRilevamentiLocalitaMese(Month mese, Citta localita) {
 		
 		final String sql = "SELECT Localita, Data, Umidita FROM situazione WHERE MONTH(Data)=? AND Localita=? ORDER BY data ASC";
@@ -124,11 +147,6 @@ public class MeteoDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-	}
-
-	public Double getAvgRilevamentiLocalitaMese(int mese, String localita) {
-
-		return 0.0;
 	}
 
 }

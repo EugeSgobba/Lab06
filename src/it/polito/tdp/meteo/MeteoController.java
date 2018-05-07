@@ -2,7 +2,6 @@ package it.polito.tdp.meteo;
 
 import java.net.URL;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +39,7 @@ public class MeteoController {
 
 	@FXML
 	void doCalcolaSequenza(ActionEvent event) {
+		
 		Month m = boxMese.getValue() ;
 		if(m!=null) {
 			List<Citta> best = model.calcolaSequenza(m) ;
@@ -71,9 +71,7 @@ public class MeteoController {
 		assert btnUmidita != null : "fx:id=\"btnUmidita\" was not injected: check your FXML file 'Meteo.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Meteo.fxml'.";
 		
-//		boxMese.getItems().add(Month.JANUARY) ;
-//		boxMese.getItems().add(Month.FEBRUARY) ;
-		
+		// popola la boxMese con i 12 mesi dell'anno
 		for(int mese = 1; mese <= 12 ; mese ++)
 			boxMese.getItems().add(Month.of(mese)) ;
 		
