@@ -6,7 +6,6 @@ import java.util.List;
 
 import it.polito.tdp.meteo.bean.Citta;
 import it.polito.tdp.meteo.bean.CittaUmidita;
-import it.polito.tdp.meteo.bean.SimpleCity;
 import it.polito.tdp.meteo.db.MeteoDAO;
 
 public class Model {
@@ -47,9 +46,14 @@ public class Model {
 		List<Citta> parziale = new ArrayList<>() ;
 		this.best = null ;
 		
-		// carica dentro ciascuna delle leCitta la lista dei rilevamenti nel mese considerato (e solo quello)
-		// citta.setRilevamenti(dao.getRilevamentiCittaMese(...))
+		MeteoDAO dao = new MeteoDAO() ;
 		
+		// carica dentro ciascuna delle leCitta la lista dei rilevamenti nel mese considerato (e solo quello)
+		// citta.setRilevamenti(dao.getRilevamentiLocalitaMese(...))
+		for(Citta c: leCitta) {
+			c.setRilevamenti(dao.getRilevamentiLocalitaMese(mese, c));
+		}
+		//System.out.println("\nRICERCA MESE "+mese.toString());
 		cerca(parziale, 0) ;
 		return best ;
 	}
@@ -60,10 +64,12 @@ public class Model {
 			// caso terminale
 			Double costo = calcolaCosto(parziale) ;
 			if( best==null || costo < calcolaCosto(best)) {
+				//System.out.format("%f %s\n", costo, parziale) ;
+
 				best = new ArrayList<>(parziale) ;
 			}
 			
-			System.out.println(parziale);
+			//System.out.println(parziale);
 		} else {
 			
 			// caso intermedio
@@ -86,13 +92,26 @@ public class Model {
 	
 	private Double calcolaCosto(List<Citta> parziale) {
 		
-		// sommatoria delle umidit‡ in ciascuna citt‡, considerando il rilevamendo del giorno giusto
+		double costo = 0.0 ;
+		
+		// sommatoria delle umidit√† in ciascuna citt√†, considerando il rilevamendo del giorno giusto
 		// SOMMA parziale.get(giorno-1).getRilevamenti().get(giorno-1)
+		for(int giorno=1; giorno<=NUMERO_GIORNI_TOTALI; giorno++) {
+			// dove mi trovo?
+			Citta c = parziale.get(giorno-1) ;
+			// che umidit√† ho in quel giorno in quella citt√†?
+			double umid = c.getRilevamenti().get(giorno-1).getUmidita() ;
+			costo += umid ;
+		}
 		
-		// a cui sommo 100 * numero di volte in cui cambio citt‡
+		// a cui sommo 100 * numero di volte in cui cambio citt√†
+		for(int giorno=2; giorno<=NUMERO_GIORNI_TOTALI; giorno++) {
+			if(!parziale.get(giorno-1).equals(parziale.get(giorno-2))) {
+				costo += COST ;
+			}
+		}
 
-		
-		return null;
+		return costo;
 	}
 
 	private boolean aggiuntaValida(Citta prova, List<Citta> parziale) {
@@ -119,22 +138,6 @@ public class Model {
 			return true ;
 		
 		return false;
-	}
-
-	public String trovaSequenza(int mese) {
-
-		return "TODO!";
-	}
-
-	private Double punteggioSoluzione(List<SimpleCity> soluzioneCandidata) {
-
-		double score = 0.0;
-		return score;
-	}
-
-	private boolean controllaParziale(List<SimpleCity> parziale) {
-
-		return true;
 	}
 
 }

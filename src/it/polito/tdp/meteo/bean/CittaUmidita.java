@@ -8,7 +8,7 @@ public class CittaUmidita {
 	public CittaUmidita(Citta citta, Double umid) {
 		super();
 		this.citta = citta;
-		this.umidita = umidita;
+		this.umidita = umid;
 	}
 
 

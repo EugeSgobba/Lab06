@@ -2,6 +2,10 @@ package it.polito.tdp.meteo;
 
 import java.net.URL;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.meteo.bean.Citta;
@@ -10,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
+import javafx.util.StringConverter;
 
 public class MeteoController {
 	
@@ -37,7 +42,9 @@ public class MeteoController {
 	void doCalcolaSequenza(ActionEvent event) {
 		Month m = boxMese.getValue() ;
 		if(m!=null) {
-			model.calcolaSequenza(m) ;
+			List<Citta> best = model.calcolaSequenza(m) ;
+			txtResult.appendText("Sequenza ottima per il mese "+m.toString()+"\n");
+			txtResult.appendText(best+"\n");
 		}
 
 	}
@@ -51,7 +58,7 @@ public class MeteoController {
 
 			for(Citta c: model.getLeCitta()) {
 				Double u = model.getUmiditaMedia(m, c) ;
-				txtResult.appendText(String.format("Citt� %s: umidit� %f\n", c.getNome(), u));
+				txtResult.appendText(String.format("Città %s: umidità %f\n", c.getNome(), u));
 			}
 		}
 		
@@ -69,6 +76,21 @@ public class MeteoController {
 		
 		for(int mese = 1; mese <= 12 ; mese ++)
 			boxMese.getItems().add(Month.of(mese)) ;
+		
+		// il setConverter serve a definire un metodo alternativo al toString nativo di <Month> per definire
+		// l'etichetta del bottone. In questo caso lo covertiamo utilizzando la lingua italiana.
+		// La ChoiceBox utilizzerà quindi il toString di questo StringConverter anziché quello di default.
+		boxMese.setConverter(new StringConverter<Month>() {
+			@Override
+			public String toString(Month m) {
+				return m.getDisplayName(TextStyle.FULL, Locale.ITALIAN) ;
+			}
+			
+			@Override
+			public Month fromString(String string) {
+				return null;
+			}
+		});
 	}
 	
 	public void setModel(Model m) {
