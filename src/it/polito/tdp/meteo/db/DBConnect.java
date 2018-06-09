@@ -7,22 +7,10 @@ import java.sql.SQLException;
 
 public class DBConnect {
 
-	static private final String jdbcUrl = "jdbc:mysql://localhost/meteo?user=root&password=root";
-	static private DBConnect instance = null;
+	static private final String jdbcUrl = "jdbc:mysql://localhost/meteo?user=root&password=gnsgbba";
 
-	private DBConnect() {
-		instance = this;
-	}
-
-	public static DBConnect getInstance() {
-		if (instance == null)
-			return new DBConnect();
-		else {
-			return instance;
-		}
-	}
-
-	public Connection getConnection() {
+	
+	public static Connection getConnection() {
 		try {
 
 			Connection conn = DriverManager.getConnection(jdbcUrl);

@@ -6,15 +6,17 @@ public class Citta {
 
 	private String nome;
 	private List<Rilevamento> rilevamenti;
-	private int counter = 0;
+	private int counter ;
 	
 	public Citta(String nome) {
 		this.nome = nome;
+		counter=0;
 	}
 	
 	public Citta(String nome, List<Rilevamento> rilevamenti) {
 		this.nome = nome;
 		this.rilevamenti = rilevamenti;
+		counter=0;
 	}
 
 	public String getNome() {

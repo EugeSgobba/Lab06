@@ -4,14 +4,17 @@ public class SimpleCity {
 
 	private String nome;
 	private int costo;
+	private int counter;
 	
 	public SimpleCity(String nome) {
 		this.nome = nome;
+		counter=0;
 	}
 	
 	public SimpleCity(String nome, int costo) {
 		this.nome = nome;
 		this.costo = costo;
+		counter=0;
 	}
 
 	public String getNome() {
@@ -28,6 +31,14 @@ public class SimpleCity {
 
 	public void setCosto(int costo) {
 		this.costo = costo;
+	}
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
 	}
 
 	@Override
